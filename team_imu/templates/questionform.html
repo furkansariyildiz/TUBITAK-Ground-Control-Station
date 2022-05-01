@@ -1,0 +1,187 @@
+
+
+
+<script>
+    $("input:checkbox").on('click', function() {
+  // in the handler, 'this' refers to the box clicked on
+  var $box = $(this);
+  if ($box.is(":checked")) {
+    // the name of the box is retrieved using the .attr() method
+    // as it is assumed and expected to be immutable
+    var group = "input:checkbox[name='" + $box.attr("name") + "']";
+    // the checked state of the group/box on the other hand will change
+    // and the current value is retrieved using .prop() method
+    $(group).prop("checked", false);
+    $box.prop("checked", true);
+  } else {
+    $box.prop("checked", false);
+  }
+}); 
+</script>
+
+
+<p>Soru {{count}}</p>
+<div id="question_form"></div>
+
+<script type="text/javascript">
+    var frm = $('#contactForm1');
+    function refresh_questionform(){
+      setTimeout(function(){
+        $('#question_form').load('/base/chatbot/question_form');
+        //refresh_questionform()
+      });
+    }
+
+
+    
+    frm.submit(function (e) {
+    
+        e.preventDefault();
+    
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                console.log('Submission was successful.');
+                console.log(data);
+            },
+            error: function (data) {
+                console.log('An error occurred.');
+                console.log(data);
+            },
+        });
+
+        refresh_questionform();
+
+    });
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+ <div class="form-group" id="questionform{{count}}">
+  {% csrf_token %} 
+  <!-- Form input fields here (do not forget your name attributes). -->
+  <p>Please select your answer</p>
+    <input type="radio" id="ans1"  name="fav_language" value="A1">
+    <label for="ans1">A1</label><br>
+    <input type="radio" id="ans2" name="fav_language" value="A2">
+    <label for="ans2">A2</label><br>
+    <input type="radio" id="ans3" name="fav_language" value="A3">
+    <label for="ans3">A3</label><br>
+    <input type="radio" id="ans4" name="fav_language" value="A4">
+    <label for="ans4">A4</label><br>
+    <button id="updateButton" class="btn btn-primary updateButton">Update</button>
+ </div>
+<div id="membersection"></div>
+
+<script>
+  count = {{count}};
+
+
+  
+  function refresh_questionform(){
+      setTimeout(function(){
+        $('#question_form').load('/base/chatbot/question_form');
+      });
+    }
+
+
+    
+
+  $('.updateButton').on('click', function(){
+    var ans1 = $('#ans1').val();
+    var ans2 = $('#ans2').val();
+    var ans3 = $('#ans3').val();
+
+    var point = 0;
+
+    var ans1_check = document.getElementById("ans1").checked;
+    var ans2_check = document.getElementById("ans2").checked;
+    var ans3_check = document.getElementById("ans3").checked;
+    var ans4_check = document.getElementById("ans4").checked;
+
+    if(ans1_check == true)
+    {
+      point = 1;
+    }
+
+    else if(ans2_check == true)
+    {
+      point = 2;
+    }
+
+    else if(ans3_check == true)
+    {
+      point = 3;
+    }
+
+    else if(ans4_check == true)
+    {
+      point = 4;
+    }
+
+    else
+    {
+      point = 0;
+      window.alert("Lütfen seçim yapın.")
+    }
+
+
+    req = $.ajax({
+      url: '/base/chatbot/question_form',
+      type: 'POST',
+      data: {
+        point : point,
+        'csrfmiddlewaretoken': '{{ csrf_token }}',
+      }
+    })
+    
+    refresh_questionform();
+    if(point != 0)
+    {
+      addElement();
+      count++;
+    }
+    //window.alert(count);
+  });
+  
+</script>
+
+<script>
+  document.body.onload = addElement;
+  var elem = document.getElementById("questionform" + String({{count}}));
+  var count = {{count}};
+
+function addElement () { 
+  // create a new div element 
+  var newDiv = document.createElement("div");
+  //window.alert("func count:" + count); 
+  // and give it some content 
+  //var newContent = document.createTextNode("Hi there and greetings!"); 
+  // add the text node to the newly created div
+  newDiv.appendChild(elem);  
+
+  // add the newly created element and its content into the DOM 
+  var currentDiv = document.getElementById("div1"); 
+  document.body.insertBefore(newDiv, currentDiv); 
+}
+
+
+
+
+</script>
+
+
+
+

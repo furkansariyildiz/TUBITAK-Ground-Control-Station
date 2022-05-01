@@ -1,0 +1,15 @@
+{
+"my_id":"0",
+"my_port":"/dev/ttyUSB0",
+"my_baud":"9600",
+"my_ip":"192.168.1.101",
+"ip_list":"192.168.1.103",
+"uav_ip":"192.168.1.103",
+"ground_ip":"192.168.1.110",
+"altitude":"50",
+"freq_list":"164.242,164.021,164.132,165.021,164.960,164.720",
+"angle_list":"30,60,180",
+"measurement_duration_list":"3,4,5",
+"load_variables":"1",
+"load_variables_filename":"all_vars_11-27-2017 14:25:38.pickle"
+}

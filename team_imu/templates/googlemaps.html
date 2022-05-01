@@ -1,0 +1,1754 @@
+{%extends "layout.html"%}
+{%load static%}
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1,maxiumum-sclae=1,user-scalable=no"/>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<link rel="stylesheet" href="{%static 'css/font-awesome.min.css'%}"> 
+<script src="{%static 'js/require.js' %}"></script>
+<script type="text/javascript" src="/static/js/map.js"></script>
+<script type="text/javascript" src="{%static 'js/require.js'%}"></script>
+<script src="{%static 'js/plot.js' %}"></script>
+<script src="{%static 'js/chart.js'%}"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js"></script>
+<script src="https://unpkg.com/three@0.126.0/build/three.min.js"></script>
+<script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js"></script>
+<script src="../static/dist/threebox.js" type="text/javascript"></script>
+<link href="../static/dist/threebox.css" rel="stylesheet" />
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js"></script>
+{%block body3%}
+<body style="background-color:#181818;">
+</body>
+<style rel="stylesheet" type="text/css">
+  /* 
+* jQuery Flight Indicators plugin
+* By Sébastien Matton (seb_matton@hotmail.com)
+* Published under GPLv3 License.
+* 
+* https://github.com/sebmatton/jQuery-Flight-Indicators
+*/
+
+/* Global block of an indicator*/
+div.instrument {
+width: 250px;
+height: 250px;
+position: relative;
+display: inline-block;
+overflow: hidden;
+}
+
+/* The box containing any element of an indicator */
+div.instrument .box {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+}
+
+/* Default transformations */
+
+div.instrument.attitude div.roll {
+transform: rotate(0deg);
+}
+div.instrument.attitude div.roll div.pitch {
+top: 0%;
+}
+div.instrument.heading div.yaw {
+transform: rotate(0deg);
+}
+div.instrument.vario div.vario {
+transform: rotate(0deg);
+}
+div.instrument.speed div.airspeed {
+transform: rotate(90deg);
+}
+div.instrument.altimeter div.pressure {
+transform: rotate(40deg);
+}
+div.instrument.altimeter div.needle {
+transform: rotate(90deg);
+}
+div.instrument.altimeter div.needleSmall {
+transform: rotate(90deg);
+}
+
+</style>
+
+<style>
+  table, th, td{
+    border: 5px solid gray;
+    text-align: left;
+    color: orange;
+}
+div{
+  color: orange;
+}
+
+#wrapper {
+    border: 2.5px solid gray;
+    border-style: none;
+}
+#div1 {
+    display: inline-block;
+}
+#div2 {
+    display: inline-block;
+}
+
+
+</style>
+
+
+<!--script>
+  
+      $(document).ready(function(){  
+        $('#auto').load('load')
+        refresh();
+    });
+
+    
+
+    function refresh(){
+        setTimeout(function(){
+            $('#auto').load('load')
+            refresh();
+        },1000);
+
+    }
+
+    $(document).ready(function(){
+      $('#target_gps').load('target_gps_post')
+      refresh_target_gps();
+    },1000)
+
+    function refresh_target_gps(){
+      setTimeout(function(){
+        $('#target_gps').load('target_gps_post');
+        refresh_target_gps();
+      },1000);
+    }
+
+ 
+    $(document).ready(function(){
+      $('#pool_point').load('pool_point')
+      refresh_pool_point();
+    });
+
+    
+
+
+    function refresh_pool_point(){
+      setTimeout(function(){
+        $('#pool_point').load('pool_point')
+        refresh_pool_point();
+      },1000);
+    }
+
+    $(document).ready(function(){ //Burası latitude için refresh kısmı
+        $('#latitude').load('latitude')
+        refresh_latitude();
+    });
+
+    function refresh_latitude(){
+      setTimeout(function(){
+        $('#latitude').load('latitude')
+        refresh_latitude();
+      },1000);
+    }
+
+    $(document).ready(function(){ //Burası longitude için refresh kısmı
+        $('#longitude').load('longitude')
+        refresh_longitude();
+    });
+
+    function refresh_longitude(){
+      setTimeout(function(){
+        $('#longitude').load('longitude');
+        refresh_longitude();
+      },1000);
+    }
+
+    $(document).ready(function(){ //Burası altitude için refresh kısmı
+      $('#altitude').load('altitude')
+      refresh_altitude();
+    });
+
+    function refresh_altitude(){
+      setTimeout(function(){
+        $('#altitude').load('altitude');
+        refresh_altitude();
+      },1000);
+    }
+    
+    $(document).ready(function(){
+      $('#bar_height').load('bar_height')
+      refresh_bar_height();
+    });
+
+    function refresh_bar_height(){
+      setTimeout(function(){
+        $('#bar_height').load('bar_height');
+        refresh_bar_height();
+      },1000);
+    }
+
+    $(document).ready(function(){
+      $('#heading1').load('heading')
+      refresh_heading();
+    });
+
+    function refresh_heading(){
+      setTimeout(function(){
+        $('#heading1').load('heading');
+        refresh_heading();
+      },1000);
+    }
+
+    $(document).ready(function(){
+      $('#roll').load('roll')
+      refresh_roll();
+    });
+
+    function refresh_roll(){
+      setTimeout(function(){
+        $('#roll').load('roll');
+        refresh_roll();
+      },1000);
+    }
+
+    $(document).ready(function(){
+      $('#pitch').load('pitch')
+      refresh_pitch();
+    });
+
+    function refresh_pitch(){
+      setTimeout(function(){
+        $('#pitch').load('pitch');
+        refresh_pitch();
+      },1000);
+    }
+
+    $(document).ready(function(){
+      $('#yaw').load('yaw')
+      refresh_yaw();
+    });
+
+    function refresh_yaw(){
+      setTimeout(function(){
+        $('#yaw').load('yaw');
+        refresh_yaw();
+      },1000);
+    }
+
+    $(document).ready(function(){
+      $('#speed_x').load('speed_x')
+      refresh_speed_x();
+    });
+
+    function refresh_speed_x(){
+      setTimeout(function(){
+        $('#speed_x').load('speed_x');
+        refresh_speed_x();
+      },1000);
+    }
+
+    $(document).ready(function(){
+      $('#speed_y').load('speed_y')
+      refresh_speed_y();
+    });
+
+    function refresh_speed_y(){
+      setTimeout(function(){
+        $('#speed_y').load('speed_y');
+        refresh_speed_y();
+      },1000);
+    }
+
+    $(document).ready(function(){
+      $('#speed_z').load('speed_z');
+      refresh_speed_z();
+    })
+
+    function refresh_speed_z(){
+      setTimeout(function(){
+        $('#speed_z').load('speed_z');
+        refresh_speed_z();
+      },1000);
+    }
+
+
+    
+
+    $(document).ready(function(){
+      $('#drone_bilgi').load('drone_bilgi');
+      refresh_drone_bilgi();
+    })
+
+    function refresh_drone_bilgi(){
+      setTimeout(function(){
+        $('#drone_bilgi').fadeOut('slow').load('drone_bilgi');
+        refresh_drone_bilgi();
+      },1000)
+    }
+    
+    $(document).ready(function(){
+      $('#txt_bilgi_alma').load('txt_bilgi_alma');
+      refresh_txt_bilgi_alma();
+    })
+
+    function refresh_txt_bilgi_alma(){
+      setTimeout(function(){
+        $('#txt_bilgi_alma').fadeOut('slow').load('txt_bilgi_alma')
+        refresh_txt_bilgi_alma();
+      },1000)
+    }
+
+    $(document).ready(function(){
+      $('#batarya_goster').load('batarya_goster');
+      refresh_batarya_goster();
+    })
+
+    function refresh_batarya_goster(){
+      setTimeout(function(){
+        $('#batarya_goster').fadeOut('slow').load('batarya_goster')
+        refresh_batarya_goster();
+      },1000)
+      
+    }
+
+    
+    $(document).ready(function(){
+      $('#lat_and_long').load('lat_and_long');
+      refresh_lat_and_long();
+    })
+
+    function refresh_lat_and_long(){
+      setTimeout(function(){
+        $('#lat_and_long').fadeOut('slow').load('lat_and_long')
+        refresh_lat_and_long();
+      },1000)
+      
+    }
+
+    $(document).ready(function(){
+      $('#water_datas').load('water_datas');
+      refresh_water_datas();
+    })
+
+    function refresh_water_datas(){
+      setTimeout(function(){
+        $('#water_datas').load('water_datas')
+        refresh_water_datas();
+      },1000)
+    }
+
+    $(document).ready(function(){
+      $('#image_paths').load('image_paths');
+      refresh_image_paths();
+    })
+
+    function refresh_image_paths(){
+      setTimeout(function(){
+        $('#image_paths').load('image_paths');
+        refresh_image_paths();
+      }, 500)
+    }
+    
+
+    $(document).ready(function(){
+      $('#control_robot_div').load('control');
+      //refresh_control();
+    })
+    /*
+    function refresh_control(){
+      setTimeout(function(){
+        $('#control_robot_div').load('control');
+        refresh_control();
+      },1000)
+    }
+    */
+</script-->
+
+<title>Add Map</title>
+<!-- jsFiddle will insert css and js -->
+</head>
+<body>
+
+
+<!--The div element for the map -->
+
+<table id="table" class="table table-dark">
+  <tr>
+    <th scope="row" style="width: 10000px; height: 1000px; position: relative;">
+      <div id="map" style="display: none; position: absolute; "></div>
+      <div id="maps" style="display: block; position: absolute;"></div>
+  
+      <div class="text-center" style="position: absolute; margin-top: 35%; margin-left: 80%;">
+          <span id="airspeed" ></span> 
+          <span id="attitude"></span> 
+      </div>
+      <div class="text-center" style="position: absolute; margin-top: 25%; margin-left: 80%">
+          <span id="heading"></span>
+          <span id="variometer"></span>
+      </div>
+
+    </th>
+    
+
+    
+    <th scope = "row" style="width: 550px;">
+      <div id="wrapper">
+        <div id="div1"><h3>Altitude:</h3></div>
+        <div id="div2"><h4><div id="altitude"></div></h4></div>
+        <div id="div1"><h4>(m)</h4></div>
+      </div>
+      <div id="wrapper">
+        <div id="div1"><h3>Latitude:</h3></div>
+        <div id="div2"><h4><div id="latitude"></div></h4></div>
+      </div>
+      <div id="wrapper">
+        <div id="div1"><h3>Longitude:</h3></div>
+        <div id="div2"><h4><div id="longitude"></div></h4></div>
+      </div>
+      <div id="wrapper">
+        <div id="div1"><h3>Heading:</h3></div>
+        <div id="div2"><h4><div id="heading1"></div></h4></div>
+      </div>
+      <div id="wrapper">
+        <div id="div1"><h3>Battery:</h3></div>
+        <div id="div2"><h4><div style="display: none;" id="batarya_goster"></div><div class="fa" id="battery_sembol"></div></h4></div>
+      </div>
+      <div id="wrapper">
+        <div id="div1"><h3>Roll:</h3></div>
+        <div id="div2"><h4><div id="roll"></div></h4></div>
+      </div>
+      <div id="wrapper">
+        <div id="div1"><h3>Pitch:</h3></div>
+        <div id="div2"><h4><div id="pitch"></div></h4></div>
+      </div>
+      <div id="wrapper">
+        <div id="div1"><h3>Yaw:</h3></div>
+        <div id="div2"><h4><div id="yaw"></div></h4></div>
+      </div>
+      <div id="wrapper">
+        <div id="div1"><h3>Speed X:</h3></div>
+        <div id="div2"><h4><div id="speed_x"></div></h4></div>
+        <div id="div1"><h4>(m/s)</h4></div>
+      </div>
+      <div id="wrapper">
+        <div id="div1"><h3>Speed Y:</h3></div>
+        <div id="div2"><h4><div id="speed_y"></div></h4></div>
+        <div id="div1"><h4>(m/s)</h4></div>
+      </div>
+      <div id="wrapper">
+        <div id="div1"><h3>Speed Z:</h3></div>
+        <div id="div2"><h4><div id="speed_z"></div></h4></div>
+        <div id="div1"><h4>(m/s)</h4></div>
+      </div>
+    </th>
+    
+
+  </tr>
+      
+</table>
+
+<button class="btn btn-warning" style="position: absolute; margin-left: 50%;" onclick="changeMap()">GoogleMaps-Mapbox</button>
+
+<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+<!-- API KEY BURAYA GELECEKTIR =API_KEY& -->
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7U2QBjZQdQrvEy8AVWjcqdqOgEVE6W94&callback=initMap&libraries=&v=weekly&channel=2"
+  async="false"
+></script>
+
+<style>
+/* Set the size of the div element that contains the map */
+#map {
+  height: 99%;
+  /* The height is 400 pixels */
+  width: 99%;
+  /* The width is the width of the web page */
+  position: absolute;
+}
+#maps { 
+  height: 99%;
+
+  width: 99%;
+  /* The width is the width of the web page */
+  position: absolute;
+  background-size: cover;
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.AnyUnusedClassName {
+color: #000000;
+}
+</style>
+
+<script>
+  //google maps
+  // Initialize and add the map
+function initMap() {
+  // The location of Uluru
+  imu = { lat: 40.997283923242996, lng:  29.0637469004324 };
+  // The map, centered at Uluru
+  map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 15,
+    center: imu,
+  });
+
+  
+  marker = new google.maps.Marker({
+        position: map.getCenter(),
+        map: map,
+        title: "Plane",
+        icon: {
+            path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+            scale: 4,
+            strokeColor: "#F00",
+            fillColor: "#F00",
+            fillOpacity: 1,
+            rotation: 0,
+        }
+    });
+    
+    ///////////////////////////////////////////
+    //GELISTIRME YAPILDIGI MUDDETCE YORUMA ALMA
+
+  var coordinatesJsonType = {
+  "type": "geojson",
+  "data": {
+    "features": [
+  
+      {
+        "type": "Feature",
+        "properties": {
+          "level": 1,
+          "name": "Bird Exhibit",
+          "height": 2,
+          "base_height": 0,
+          "color": "red"
+        },
+        "geometry": {
+          "coordinates": [
+            [
+            ]
+          ],
+          "type": "Polygon"
+        }
+     
+      }
+    ],
+    "type": "FeatureCollection"
+  }
+  }
+
+  //var coordinatesJson = ""
+
+  
+  //var countforCoordinates = 1;
+
+    let coordinates_to_json = new Array();
+    let infoWindows = new Array();
+
+    let infoWindow = new google.maps.InfoWindow({
+    content: "Click the map to push coordinates to memory!",
+    position: imu,
+  });
+
+  infoWindow.open(map);
+  // Configure the click listener.
+  map.addListener("click", (mapsMouseEvent) => {
+    // Close the current InfoWindow.
+    //infoWindow.close();
+    // Create a new InfoWindow.
+    infoWindow = new google.maps.InfoWindow({
+      position: mapsMouseEvent.latLng,
+    });
+    infoWindow.setContent(
+      JSON.stringify(mapsMouseEvent.latLng.toJSON())
+    );
+    infoWindow.open(map);
+    infoWindows.push(infoWindow);
+    coordinates_to_json.push([mapsMouseEvent.latLng.toJSON()["lng"], mapsMouseEvent.latLng.toJSON()["lat"]])
+  });
+
+
+  function CenterControl(controlDiv, map) {
+  // Set CSS for the control border.
+  const controlUI = document.createElement("div");
+
+  controlUI.style.backgroundColor = "white";
+  controlUI.style.border = "2px solid #fff";
+  controlUI.style.borderRadius = "3px";
+  controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+  controlUI.style.cursor = "pointer";
+  controlUI.style.marginTop = "8px";
+  controlUI.style.marginBottom = "22px";
+  controlUI.style.textAlign = "center";
+  controlUI.title = "Push the coordinates to json";
+  controlDiv.appendChild(controlUI);
+
+  // Set CSS for the control interior.
+  const controlText = document.createElement("div");
+
+  controlText.style.color = "orange";
+  controlText.style.fontFamily = "Roboto,Arial,sans-serif";
+  controlText.style.fontSize = "16px";
+  controlText.style.lineHeight = "38px";
+  controlText.style.paddingLeft = "5px";
+  controlText.style.paddingRight = "5px";
+  controlText.innerHTML = "Push the coordinates to json";
+  controlUI.appendChild(controlText);
+  // Setup the click event listeners: simply set the map to Chicago.
+  controlUI.addEventListener("click", () => {
+    for (var i = 0; i < infoWindows.length; i++)
+    {
+      infoWindows[i].close();
+    }
+
+    var value = prompt("Please enter the height of building", "0");
+
+    if (value != null && String(parseInt(value, 10)) != "NaN") {
+
+        value = parseInt(value, 10);
+        //window.alert("Height: " + value);
+        var coordinatesJson = JSON.parse(JSON.stringify(coordinatesJsonType))
+        //window.alert(coordinatesJsonType["data"]["features"][0]["geometry"]["coordinates"]);
+        coordinatesJson["data"]["features"][0]["geometry"]["coordinates"].push(coordinates_to_json);
+        coordinatesJson["data"]["features"][0]["geometry"]["coordinates"].push(coordinates_to_json[0]);
+        coordinatesJson["data"]["features"][0]["properties"]["height"] = value;
+        //console.log(coordinatesJsonType);
+        //coordinates_to_json = coordinatesJsonType;
+        //window.alert("coordinates_to_json lenght: " + coordinates_to_json.length);
+        
+        window.parent.output_file = coordinatesJson;
+        window.parent.fcn();
+        
+    
+        //window.alert("Last ITEM: " + coordinatesJson["data"]["features"][0]["geometry"]["coordinates"].at(-1));    
+
+        //window.alert(coordinatesJsonType["data"]["features"][0]["geometry"]["coordinates"]);
+        coordinates_to_json = new Array();
+        
+    }
+
+    else
+    {
+      window.alert("Please enter an integer or float and re-upload your json file!");
+    }
+
+
+    
+  });
+}
+
+function DeleteCoordinates(deletebtn, map) {
+  const deleteUI = document.createElement("div");
+
+  deleteUI.style.background = "white";
+  deleteUI.style.border = "2px solid #fff";
+  deleteUI.style.borderRadius = "3px";
+  deleteUI.style.boxShadow = "0 2px 6px rgba(0, 0, 0, .3)";
+  deleteUI.style.cursor = "pointer";
+  deleteUI.style.marginTop = "8px";
+  deleteUI.style.textAlign = "center";
+  deleteUI.title = "Delete the coordinates from json";
+  deletebtn.appendChild(deleteUI)
+
+  const deleteText = document.createElement("div");
+
+  deleteText.style.color = "orange";
+  deleteText.style.fontFamily = "Roboto,Arial,sans-serif";
+  deleteText.style.fontSize = "16px";
+  deleteText.style.lineHeight = "38px";
+  deleteText.style.paddingLeft = "5px";
+  deleteText.style.paddingRight = "5px";
+  deleteText.innerHTML = "Delete coordinates from json";
+  deleteUI.appendChild(deleteText);
+
+  deleteUI.addEventListener("click", () => {
+    for (var i = 0; i < infoWindows.length; i++)
+    {
+      infoWindows[i].close();
+    }
+    
+    coordinates_to_json = new Array();
+  })
+}
+
+
+
+function panToGoogleMaps(panbtn, map) {
+  const pantoUI = document.createElement("div");
+  window.panToCondition = 1;
+
+  pantoUI.style.background = "white";
+  pantoUI.style.border = "2px solid #fff";
+  pantoUI.style.borderRadius = "3px";
+  pantoUI.style.boxShadow = "0 2px 6px rgba(0, 0, 0, .3)";
+  pantoUI.style.cursor = "pointer";
+  pantoUI.style.marginTop = "8px";
+  pantoUI.style.textAlign = "center";
+  pantoUI.title = "Panto GoogleMaps";
+  panbtn.appendChild(pantoUI)
+
+  const pantoText = document.createElement("div");
+
+  pantoText.style.color = "orange";
+  pantoText.style.fontFamily = "Roboto,Arial,sans-serif";
+  pantoText.style.fontSize = "16px";
+  pantoText.style.lineHeight = "38px";
+  pantoText.style.paddingLeft = "5px";
+  pantoText.style.paddingRight = "5px";
+  pantoText.innerHTML = "Panto GoogleMaps";
+  pantoUI.appendChild(pantoText);
+
+  pantoUI.addEventListener("click", () => {
+    window.parent.panToCondition = -1 * window.parent.panToCondition;
+  })
+}
+
+const panToButton = document.createElement("div");
+
+panToGoogleMaps(panToButton, map);
+map.controls[google.maps.ControlPosition.TOP_CENTER].push(panToButton)
+
+const deleteCoordinatesButton = document.createElement("div");
+
+DeleteCoordinates(deleteCoordinatesButton, map);
+map.controls[google.maps.ControlPosition.TOP_CENTER].push(deleteCoordinatesButton);
+
+const pushToCoordinatesButton = document.createElement("div");
+
+CenterControl(pushToCoordinatesButton, map);
+map.controls[google.maps.ControlPosition.TOP_CENTER].push(pushToCoordinatesButton);
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+}
+
+
+
+</script>
+
+<script src="https://unpkg.com/three@0.126.0/build/three.min.js"></script>
+<script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
+
+<script>
+
+</script>
+
+<script type="module">
+
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZnVyY2FuZG90aGlzIiwiYSI6ImNrN3AxZjRsdjA1OXQzZ3E5ZzcycDd4MzIifQ.U7ScVmUzA60CsdEgj7ajNg';
+        //window.alert(config.accessToken);
+        let origin1 = [29.0637469004324, 40.997283923242996]
+		    let origin2 = [-122.34548, 47.617538, 0];
+        let origin3 = [-122.3491, 47.6207, 0];
+
+       
+
+        let minZoom = 12;
+        let names = {
+            compositeSource: "composite",
+            compositeSourceLayer: "building",
+            compositeLayer: "3d-buildings"
+
+        }
+        var mapbox = new mapboxgl.Map({
+            container: 'maps',
+            style: 'mapbox://styles/mapbox/light-v10',
+            center: origin1,
+            zoom: 16.5,
+            pitch: 60,
+            antialias: true,
+            heading: 0, hash: true
+        });
+        
+        // we can add Threebox to mapbox to add built-in mouseover/mouseout and click behaviors
+        window.tb = new Threebox(
+            mapbox,
+            mapbox.getCanvas().getContext('webgl'),
+            {
+                defaultLights: true,
+                enableSelectingFeatures: false, //change this to false to disable fill-extrusion features selection
+                enableSelectingObjects: true, //change this to false to disable 3D objects selection
+                enableDraggingObjects: true, //change this to false to disable 3D objects drag & move once selected
+                enableRotatingObjects: true, //change this to false to disable 3D objects rotation once selected
+                enableTooltips: false, // change this to false to disable default tooltips on fill-extrusion and 3D models
+            }
+        );
+            
+        var redMaterial = new THREE.MeshPhongMaterial({
+            color: 0x660000,
+            side: THREE.DoubleSide
+        });
+        
+         window.output_file = "";
+        
+
+        setTimeout(function(){
+          
+          document.getElementById('inputfile').addEventListener('change', function(){
+            var fr = new FileReader();
+            fr.onload = function(){
+              document.getElementById('output').textContent = fr.result;
+              window.parent.output_file = $('#output').text();
+              window.parent.output_file = JSON.parse(window.parent.output_file);
+            }
+            fr.readAsText(this.files[0]);
+            window.parent.fcn();
+          })
+        },1000)
+        
+
+
+
+    class ToggleControl {
+  
+
+      constructor(options) {
+        this._options = Object.assign({}, this._options, options)
+      }
+
+      onAdd(map, cs) {
+        this.map = mapbox;
+        this.container = document.createElement('div');
+        this.container.className = `${this._options.className}`;
+
+        const button = this._createButton('monitor_button')
+        this.container.appendChild(button);
+        return this.container;
+      }
+    
+      _createButton(className) {
+        const el = window.document.createElement('input')
+        el.type = "file"
+        el.name = "inputfile"
+        el.id = "inputfile"
+        el.className = className;
+        el.textContent = 'toggleControl';
+        el.addEventListener('click', (e) => {
+          console.log(e);
+          // e.preventDefault()
+          e.stopPropagation()
+        }, false)
+        return el;
+      }
+    }
+    const toggleControl = new ToggleControl({
+      className: 'mapboxgl-ctrl'
+    })
+    mapbox.addControl(toggleControl, 'top-left')
+
+    window.panToConditionMapbox = 1;
+
+  class panToMapbox {
+    
+
+    constructor(options) {
+      this._options = Object.assign({}, this._options, options)
+    }
+
+    onAdd(map, cs) {
+      this.map = mapbox;
+      this.container = document.createElement('div');
+      this.container.className = `${this._options.className}`;
+
+      const button = this._createButton('monitor_button')
+      this.container.appendChild(button);
+      return this.container;
+    }
+
+    _createButton(className) {
+      const btn = window.document.createElement('button')
+      btn.innerHTML = "click that";
+      btn.name = "panToButton"
+      btn.id = "panToButton"
+      btn.className = className;
+      btn.textContent = 'panto MapBox';
+      btn.addEventListener('click', (e) => {
+        
+        // e.preventDefault()
+        window.parent.panToConditionMapbox = -1 * window.parent.panToConditionMapbox;
+      }, false)
+      return btn;
+    }
+}
+const panToMapBoxbtn = new panToMapbox({
+      className: 'mapboxgl-ctrl'
+    })
+    mapbox.addControl(panToMapBoxbtn, 'top-right');
+    //window.alert("fcn ustu")
+    //input file'in eklenmesi icin gerekli olan button ekleme fonksiyonlari yukaridaki gibidir;
+
+    var count3DModels = 0;
+
+    window.coordinates = []
+
+    window.fcn = function add3DModel(){
+        //window.alert("3D Model");
+        //window.alert(window.parent.coordinates);
+        setTimeout(function(){
+        //SetTimeout fonksiyonu ara bir zmaan dilimi vermektedir,
+        window.parent.coordinates = window.parent.output_file
+        //console.log(window.parent.output_file);
+        window.parent.output_file = ""
+
+        mapbox.addSource('floorplan' + String(count3DModels), window.parent.coordinates);
+        mapbox.addLayer({
+        'id': 'room-extrusion' + String(count3DModels),
+        'type': 'fill-extrusion',
+        'source': 'floorplan' + String(count3DModels),
+        'paint': {
+        // Get the `fill-extrusion-color` from the source `color` property.
+        'fill-extrusion-color': ['get', 'color'],
+        
+        // Get `fill-extrusion-height` from the source `height` property.
+        'fill-extrusion-height': ['get', 'height'],
+        
+        // Get `fill-extrusion-base` from the source `base_height` property.
+        'fill-extrusion-base': ['get', 'base_height'],
+        
+        // Make extrusions slightly opaque to see through indoor walls.
+        'fill-extrusion-opacity': 0.5
+      }
+      });
+      },2000)
+      //window.alert(String(count));
+      count3DModels = count3DModels + 1;
+      //window.parent.updateGoogleMapFcn();
+    }
+
+
+		let stats, gui;
+		function animate() {
+			requestAnimationFrame(animate);
+			stats.update();
+		}
+    var lines = new Array();
+    var line = new Array();
+
+       
+		var active = false
+		mapbox.on('style.load', function () {
+			//init();
+
+            let cube;
+            mapbox.addLayer(createCompositeLayer());
+            var coordinates = [29.0637469004324, 40.997283923242996];
+            var coordinates1 = [-122.34548, 47.617538, 0];
+
+            function onAddFcn(mapbox, mbxContext) {    
+                tb.altitudeStep = 1;
+                var geometry = new THREE.ConeGeometry(0.5, 2, 20 );
+
+
+                cube = new THREE.Mesh(geometry, redMaterial);
+                cube = tb.Object3D({ obj: cube, units: 'meters', bbox: false, clone: false});
+                cube.setCoords(coordinates);
+                //cube.setCoords(coordinates1);
+                
+                tb.add(cube);
+
+
+                let sphere = tb.sphere(
+                    {
+                        radius: 300,
+                        units: 'meters',
+                        sides: 120,
+                        color: 'green',
+                        material: 'MeshPhysicalMaterial',
+                    }
+                ).setCoords(origin2);
+                tb.add(sphere);
+
+ 
+            }
+
+
+            var lineOptions, lineMesh;
+            
+
+
+            function onAddFcn_Line(mapbox, mbxContext){
+              window.tb = new Threebox(
+                mapbox,
+                mbxContext,
+                {defaultLights: true}
+              );
+
+                //window.alert("onAddFcn");
+
+              for (line of lines)
+              {
+               
+                lineOptions = {
+                  geometry: line,
+                  color: 'red',
+                  width: 2.5,
+                  clone: false,
+                }
+               
+                lineMesh = tb.line(lineOptions);
+                //window.alert("LINE:" + line);
+                tb.add(lineMesh)
+              }
+              
+            }
+
+            
+            
+            var marker_3d = {
+                id: 'custom_layer',
+                type: 'custom',
+                renderingMode: '3d',
+                onAdd: onAddFcn,
+				
+                render: function (gl, matrix) {
+                    tb.update();
+                }
+            };
+            
+            
+
+            var line_3d = {
+            id: 'custom_layer_line',
+            type: 'custom',
+            renderingMode: '3d',
+            onAdd: onAddFcn_Line,
+            render: function(gl, matrix){
+              tb.update();
+            }
+          };
+            
+            //mapbox.addSource('custom_layer_line', {type: 'custom', data: onAddFcn_Line});
+            mapbox.addLayer(line_3d, 'waterway-label');
+            mapbox.addLayer(marker_3d, 'waterway-label');
+            mapbox.panTo(coordinates);
+
+            
+          
+        //window.alert(marker_3d.onAdd);
+        cube.setCoords(coordinates)
+        cube.setRotation({ x: 0, y: 0, z: 0 });
+        var mapbox_div = document.getElementById("maps");
+        var count = 0;
+
+        var flagtoDelete = false; 
+        
+        setInterval(function(){  
+          /*
+          if(String(latitude_global) != "NaN")
+          //if(String(latitude_global) != "NaN" && mapbox_div.style.display != "none")
+          {
+          
+          //Line Update
+          line.push([longitude_global, latitude_global, altitude_float_deger]); //h=20;
+          lines.push(line);
+          
+       
+
+          for(line of lines)
+          {
+            lineOptions = {
+              geometry: line,
+              color: 'red',
+              width: 4,
+              clone: false
+            }
+          }
+
+          lineMesh = tb.line(lineOptions);
+          var oldLineMesh = lineMesh;
+          //lineOptions = {}; 
+          tb.add(lineMesh);
+      
+          if(lines.length > 3)
+          {
+          line.shift();
+          lines.shift();
+          //window.alert("Girdi")
+          }
+          //Cube 3D
+          cube.setCoords([longitude_global, latitude_global, altitude_float_deger]); //h = 20;
+          
+          if(window.parent.panToConditionMapbox > 0)
+          {
+          mapbox.panTo([longitude_global, latitude_global]);
+          }
+          cube.setRotation({x: 0, y: 0, z: heading_deger_float + 90});
+          
+          if(flagtoDelete == true && lines.length > 3)
+          {
+            tb.remove(oldLineMesh);
+          }
+
+          else
+          {
+            flagtoDelete = true;
+          }
+          
+          //console.log(tb);
+        }
+        
+        */
+        const lineMeshArr = new Array();
+        window.count = 0;
+
+        if(String(latitude_global) != "NaN")
+          //if(String(latitude_global) != "NaN" && mapbox_div.style.display != "none")
+          {
+          
+          //Line Update
+          line.push([longitude_global, latitude_global, altitude_float_deger]); //h=20;
+          lines.push(line);
+          
+       
+
+          for(line of lines)
+          {
+            lineOptions = {
+              geometry: line,
+              color: 'red',
+              width: 4,
+              clone: false
+            }
+          }
+
+          lineMesh = tb.line(lineOptions);
+        
+          
+          
+          //lineOptions = {}; 
+          tb.add(lineMesh);
+      
+          if(lines.length > 3000)
+          {
+          line.shift();
+          lines.shift();
+          //window.alert("Girdi")
+          }
+          //Cube 3D
+          cube.setCoords([longitude_global, latitude_global, altitude_float_deger]); //h = 20;
+          
+          if(window.parent.panToConditionMapbox > 0)
+          {
+          mapbox.panTo([longitude_global, latitude_global]);
+          }
+          cube.setRotation({x: 0, y: 0, z: heading_deger_float + 90});
+          
+          if(flagtoDelete == true)
+          {
+            //window.alert(window.parent.oldLineMesh);
+            tb.remove(window.parent.lineMeshArr[0]);
+            window.parent.lineMeshArr.shift();
+            
+          }
+
+          else
+          {
+            window.lineMeshArr = new Array();
+            flagtoDelete = true;
+            //window.alert("asdasd")
+          }
+
+         //lineMeshArr.push(lineMesh);
+         //var lin; 
+          /*
+         for(lin in lineMeshArr)
+         {
+           tb.remove(lin);
+         }
+         */
+         //window.parent.lineMeshArr.shift();
+         console.log(window.parent.lineMeshArr.length)
+         window.parent.lineMeshArr.push(lineMesh);
+          //console.log(tb);
+        }
+
+        
+
+        },1000);
+        
+        
+        });
+
+        function createCompositeLayer() {
+            let layer = {
+                'id': names.compositeLayer,
+                'source': names.compositeSource,
+                'source-layer': names.compositeSourceLayer,
+                'filter': ['==', 'extrude', 'true'],
+                'type': 'fill-extrusion',
+                'minzoom': minZoom,
+                'paint': {
+                    'fill-extrusion-color':
+                        [
+                            'case',
+                            ['boolean', ['feature-state', 'select'], false],
+                            "lightgreen",
+                            ['boolean', ['feature-state', 'hover'], false],
+                            "lightblue",
+                            '#aaa'
+                        ],
+
+                    // use an 'interpolate' expression to add a smooth transition effect to the
+                    // buildings as the user zooms in
+                    'fill-extrusion-height': [
+                        'interpolate',
+                        ['linear'],
+                        ['zoom'],
+                        minZoom,
+                        0,
+                        minZoom + 0.05,
+                        ['get', 'height']
+                    ],
+                    'fill-extrusion-base': [
+                        'interpolate',
+                        ['linear'],
+                        ['zoom'],
+                        minZoom,
+                        0,
+                        minZoom + 0.05,
+                        ['get', 'min_height']
+                    ],
+                    'fill-extrusion-opacity': 0.9
+                }
+            };
+          
+            return layer;
+        }
+
+</script>
+
+<script src="{%static 'js/jquery.min.js'%}"></script>
+<script>
+
+  /**
+* Prism: Lightweight, robust, elegant syntax highlighting
+* MIT license http://www.opensource.org/licenses/mit-license.php/
+* @author Lea Verou http://lea.verou.me
+
+*//*(function(){var e=/\blang(?:uage)?-(?!\*)(\w+)\b/i,t=self.Prism={util:{type:function(e){return Object.prototype.toString.call(e).match(/\[object (\w+)\]/)[1]},clone:function(e){var n=t.util.type(e);switch(n){case"Object":var r={};for(var i in e)e.hasOwnProperty(i)&&(r[i]=t.util.clone(e[i]));return r;case"Array":return e.slice()}return e}},languages:{extend:function(e,n){var r=t.util.clone(t.languages[e]);for(var i in n)r[i]=n[i];return r},insertBefore:function(e,n,r,i){i=i||t.languages;var s=i[e],o={};for(var u in s)if(s.hasOwnProperty(u)){if(u==n)for(var a in r)r.hasOwnProperty(a)&&(o[a]=r[a]);o[u]=s[u]}return i[e]=o},DFS:function(e,n){for(var r in e){n.call(e,r,e[r]);t.util.type(e)==="Object"&&t.languages.DFS(e[r],n)}}},highlightAll:function(e,n){var r=document.querySelectorAll('code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code');for(var i=0,s;s=r[i++];)t.highlightElement(s,e===!0,n)},highlightElement:function(r,i,s){var o,u,a=r;while(a&&!e.test(a.className))a=a.parentNode;if(a){o=(a.className.match(e)||[,""])[1];u=t.languages[o]}if(!u)return;r.className=r.className.replace(e,"").replace(/\s+/g," ")+" language-"+o;a=r.parentNode;/pre/i.test(a.nodeName)&&(a.className=a.className.replace(e,"").replace(/\s+/g," ")+" language-"+o);var f=r.textContent;if(!f)return;f=f.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\u00a0/g," ");var l={element:r,language:o,grammar:u,code:f};t.hooks.run("before-highlight",l);if(i&&self.Worker){var c=new Worker(t.filename);c.onmessage=function(e){l.highlightedCode=n.stringify(JSON.parse(e.data),o);t.hooks.run("before-insert",l);l.element.innerHTML=l.highlightedCode;s&&s.call(l.element);t.hooks.run("after-highlight",l)};c.postMessage(JSON.stringify({language:l.language,code:l.code}))}else{l.highlightedCode=t.highlight(l.code,l.grammar,l.language);t.hooks.run("before-insert",l);l.element.innerHTML=l.highlightedCode;s&&s.call(r);t.hooks.run("after-highlight",l)}},highlight:function(e,r,i){return n.stringify(t.tokenize(e,r),i)},tokenize:function(e,n,r){var i=t.Token,s=[e],o=n.rest;if(o){for(var u in o)n[u]=o[u];delete n.rest}e:for(var u in n){if(!n.hasOwnProperty(u)||!n[u])continue;var a=n[u],f=a.inside,l=!!a.lookbehind,c=0;a=a.pattern||a;for(var h=0;h<s.length;h++){var p=s[h];if(s.length>e.length)break e;if(p instanceof i)continue;a.lastIndex=0;var d=a.exec(p);if(d){l&&(c=d[1].length);var v=d.index-1+c,d=d[0].slice(c),m=d.length,g=v+m,y=p.slice(0,v+1),b=p.slice(g+1),w=[h,1];y&&w.push(y);var E=new i(u,f?t.tokenize(d,f):d);w.push(E);b&&w.push(b);Array.prototype.splice.apply(s,w)}}}return s},hooks:{all:{},add:function(e,n){var r=t.hooks.all;r[e]=r[e]||[];r[e].push(n)},run:function(e,n){var r=t.hooks.all[e];if(!r||!r.length)return;for(var i=0,s;s=r[i++];)s(n)}}},n=t.Token=function(e,t){this.type=e;this.content=t};n.stringify=function(e,r,i){if(typeof e=="string")return e;if(Object.prototype.toString.call(e)=="[object Array]")return e.map(function(t){return n.stringify(t,r,e)}).join("");var s={type:e.type,content:n.stringify(e.content,r,i),tag:"span",classes:["token",e.type],attributes:{},language:r,parent:i};s.type=="comment"&&(s.attributes.spellcheck="true");t.hooks.run("wrap",s);var o="";for(var u in s.attributes)o+=u+'="'+(s.attributes[u]||"")+'"';return"<"+s.tag+' class="'+s.classes.join(" ")+'" '+o+">"+s.content+"</"+s.tag+">"};if(!self.document){self.addEventListener("message",function(e){var n=JSON.parse(e.data),r=n.language,i=n.code;self.postMessage(JSON.stringify(t.tokenize(i,t.languages[r])));self.close()},!1);return}var r=document.getElementsByTagName("script");r=r[r.length-1];if(r){t.filename=r.src;document.addEventListener&&!r.hasAttribute("data-manual")&&document.addEventListener("DOMContentLoaded",t.highlightAll)}})();;
+Prism.languages.css={comment:/\/\*[\w\W]*?\*\//g,atrule:{pattern:/@[\w-]+?.*?(;|(?=\s*{))/gi,inside:{punctuation:/[;:]/g}},url:/url\((["']?).*?\1\)/gi,selector:/[^\{\}\s][^\{\};]*(?=\s*\{)/g,property:/(\b|\B)[\w-]+(?=\s*:)/ig,string:/("|')(\\?.)*?\1/g,important:/\B!important\b/gi,ignore:/&(lt|gt|amp);/gi,punctuation:/[\{\};:]/g};Prism.languages.markup&&Prism.languages.insertBefore("markup","tag",{style:{pattern:/(&lt;|<)style[\w\W]*?(>|&gt;)[\w\W]*?(&lt;|<)\/style(>|&gt;)/ig,inside:{tag:{pattern:/(&lt;|<)style[\w\W]*?(>|&gt;)|(&lt;|<)\/style(>|&gt;)/ig,inside:Prism.languages.markup.tag.inside},rest:Prism.languages.css}}});;
+Prism.languages.clike={comment:{pattern:/(^|[^\\])(\/\*[\w\W]*?\*\/|(^|[^:])\/\/.*?(\r?\n|$))/g,lookbehind:!0},string:/("|')(\\?.)*?\1/g,"class-name":{pattern:/((?:(?:class|interface|extends|implements|trait|instanceof|new)\s+)|(?:catch\s+\())[a-z0-9_\.\\]+/ig,lookbehind:!0,inside:{punctuation:/(\.|\\)/}},keyword:/\b(if|else|while|do|for|return|in|instanceof|function|new|try|throw|catch|finally|null|break|continue)\b/g,"boolean":/\b(true|false)\b/g,"function":{pattern:/[a-z0-9_]+\(/ig,inside:{punctuation:/\(/}}, number:/\b-?(0x[\dA-Fa-f]+|\d*\.?\d+([Ee]-?\d+)?)\b/g,operator:/[-+]{1,2}|!|&lt;=?|>=?|={1,3}|(&amp;){1,2}|\|?\||\?|\*|\/|\~|\^|\%/g,ignore:/&(lt|gt|amp);/gi,punctuation:/[{}[\];(),.:]/g};
+;
+Prism.languages.javascript=Prism.languages.extend("clike",{keyword:/\b(var|let|if|else|while|do|for|return|in|instanceof|function|get|set|new|with|typeof|try|throw|catch|finally|null|break|continue)\b/g,number:/\b-?(0x[\dA-Fa-f]+|\d*\.?\d+([Ee]-?\d+)?|NaN|-?Infinity)\b/g});Prism.languages.insertBefore("javascript","keyword",{regex:{pattern:/(^|[^/])\/(?!\/)(\[.+?]|\\.|[^/\r\n])+\/[gim]{0,3}(?=\s*($|[\r\n,.;})]))/g,lookbehind:!0}});Prism.languages.markup&&Prism.languages.insertBefore("markup","tag",{script:{pattern:/(&lt;|<)script[\w\W]*?(>|&gt;)[\w\W]*?(&lt;|<)\/script(>|&gt;)/ig,inside:{tag:{pattern:/(&lt;|<)script[\w\W]*?(>|&gt;)|(&lt;|<)\/script(>|&gt;)/ig,inside:Prism.languages.markup.tag.inside},rest:Prism.languages.javascript}}});;
+*/
+  
+</script>
+<script>
+
+  /* 
+* jQuery Flight Indicators plugin
+* By Sébastien Matton (seb_matton@hotmail.com)
+* Published under GPLv3 License.
+* 
+* https://github.com/sebmatton/jQuery-Flight-Indicators
+*/
+(function($) {
+function FlightIndicator( placeholder, type, options ) {
+// Initial configuration
+var attitude = this;
+var settings = $.extend({
+size : 200,
+roll : 0,
+pitch : 0,
+turn : 0,
+heading: 0,
+vario: 0,
+airspeed: 0,
+altitude: 0,
+pressure: 1000,
+showBox : true,
+img_directory : 'C:/Users/furka/OneDrive/Masaüstü/uav_widgets/'
+}, options );
+
+var constants = {
+pitch_bound:30,
+vario_bound : 1.95,
+airspeed_bound_l : 0,
+airspeed_bound_h : 160
+}
+
+// Creation of the instrument
+placeholder.each(function(){
+switch(type){
+  case 'heading':
+    $(this).html('<div class="instrument heading">  <div class="heading box"><img src="{%static "heading_yaw.svg"%}"" class="box" alt="" /></div><div class="mechanics box" ><img src="{%static "heading_mechanics.svg"%}" class="box" alt=""  /><img src="{%static "fi_circle.svg"%}" class="box" alt="" /></div></div>');
+    _setHeading(settings.heading);
+  break;
+  case 'variometer':
+    $(this).html('<div class="instrument vario"><img src="{%static "vertical_mechanics.svg" %}"  class="box" alt="" /><div class="vario box"><img src= "{%static "fi_needle.svg" %}"  class="box" alt="" /></div><div class="mechanics box" ><img src="{%static  "fi_circle.svg" %}"  class="box" alt="" /></div></div>');
+    _setVario(settings.vario);
+  break;
+  case 'turn_coordinator':
+    $(this).html('<div class="instrument turn_coordinator"><img src="{%static "turn_coordinator.svg"  %}" class="box" alt="" /><div class="turn box"><img src="{%static "fi_tc_airplane.svg" %}"  class="box" alt="" /></div><div class="mechanics box"><img src="{%static "fi_circle.svg" %}"  class="box" alt="" /></div></div>');
+    _setTurn(settings.turn);
+  break;
+  case 'airspeed':
+    $(this).html('<div class="instrument airspeed"><img src="{%static "speed_mechanics.svg" %}"  class="box" alt="" /><div class="speed box"><img src="{%static "fi_needle.svg" %}"  class="box" alt="" /></div><div class="mechanics box"><img src="{%static "fi_circle.svg" %}"  class="box" alt="" /></div></div>');
+    _setAirSpeed(settings.airspeed);
+  break
+  case 'altimeter':
+    $(this).html('<div class="instrument altimeter"><div class="pressure box"><img src="{%static "altitude_pressure.svg" %}"  class="box" alt="" /></div><img src="{%static "altitude_ticks.svg" %}"  class="box" alt="" /><div class="needleSmall box"><img src="{%static "fi_needle_small.svg" %}"  class="box" alt="" /></div><div class="needle box"><img src="{%static "fi_needle.svg" %}"  class="box" alt="" /></div><div class="mechanics box"><img src="{%static "fi_circle.svg" %}"  class="box" alt="" /></div></div>');
+    _setAltitude(settings.altitude);
+    _setPressure(settings.pressure);
+  break;
+  default:
+    $(this).html('<div class="instrument attitude"><div class="roll box"><img src="{%static "horizon_back.svg" %}" style="height: " class="box" alt="" /><div class="pitch box"><img src="{%static "horizon_ball.svg" %}"  class="box" alt="" /></div><img src="{%static "horizon_circle.svg" %}"  class="box" alt="" /></div><div class="mechanics box"><img src="{%static "horizon_mechanics.svg" %}"  class="box" alt="" /><img src="{%static "fi_circle.svg" %}"  class="box" alt="" /></div></div>');
+    _setRoll(settings.roll);
+    _setPitch(settings.pitch);
+}
+$(this).find('div.instrument').css({height : settings.size, width : settings.size});
+$(this).find('div.instrument img.box.background').toggle(settings.showBox);
+});
+
+// Private methods
+function _setRoll(roll){
+placeholder.each(function(){
+  $(this).find('div.instrument.attitude div.roll').css('transform', 'rotate('+roll+'deg)');
+});
+}
+
+function _setPitch(pitch){
+// alert(pitch);
+if(pitch>constants.pitch_bound){pitch = constants.pitch_bound;}
+else if(pitch<-constants.pitch_bound){pitch = -constants.pitch_bound;}
+placeholder.each(function(){
+  $(this).find('div.instrument.attitude div.roll div.pitch').css('top', pitch*0.7 + '%');
+});
+}
+
+function _setHeading(heading){
+placeholder.each(function(){
+  $(this).find('div.instrument.heading div.heading').css('transform', 'rotate(' + -heading + 'deg)');
+});	
+}
+
+function _setTurn(turn){
+placeholder.each(function(){
+  $(this).find('div.instrument.turn_coordinator div.turn').css('transform', 'rotate('+turn+'deg)');
+});
+}
+
+function _setVario(vario){
+if(vario > constants.vario_bound){vario = constants.vario_bound;}
+else if(vario < -constants.vario_bound){vario = -constants.vario_bound;}
+vario = vario*90;
+placeholder.each(function(){
+  $(this).find('div.instrument.vario div.vario').css('transform', 'rotate(' + vario + 'deg)');
+});	
+}
+
+function _setAirSpeed(speed){
+if(speed > constants.airspeed_bound_h){speed = constants.airspeed_bound_h;}
+else if(speed < constants.airspeed_bound_l){speed = constants.airspeed_bound_l;}
+speed = 90+speed*2;
+placeholder.each(function(){
+  $(this).find('div.instrument.airspeed div.speed').css('transform', 'rotate(' + speed + 'deg)');
+});	
+}
+
+function _setAltitude(altitude){
+var needle = 90 + altitude%1000 * 360 / 1000;
+var needleSmall = altitude / 10000 * 360;
+placeholder.each(function(){
+  $(this).find('div.instrument.altimeter div.needle').css('transform', 'rotate(' + needle + 'deg)');
+  $(this).find('div.instrument.altimeter div.needleSmall').css('transform', 'rotate(' + needleSmall + 'deg)');
+});	
+}
+
+function _setPressure(pressure){
+pressure = 2*pressure - 1980;
+placeholder.each(function(){
+  $(this).find('div.instrument.altimeter div.pressure').css('transform', 'rotate(' + pressure + 'deg)');
+});	
+}
+
+function _resize(size){
+placeholder.each(function(){
+  $(this).find('div.instrument').css({height : settings.size, width : settings.size});
+});
+}
+
+function _showBox(){
+placeholder.each(function(){
+  $(this).find('img.box.background').show();
+});
+}
+
+function _hideBox(){
+placeholder.each(function(){
+  $(this).find('img.box.background').hide();
+});
+}
+
+// Public methods
+this.setRoll = function(roll){_setRoll(roll);}
+this.setPitch = function(pitch){_setPitch(pitch);}
+this.setHeading = function(heading){_setHeading(heading);}
+this.setTurn = function(turn){_setTurn(turn);}
+this.setVario = function(vario){_setVario(vario);}
+this.setAirSpeed = function(speed){_setAirSpeed(speed);}
+this.setAltitude = function(altitude){_setAltitude(altitude);}
+this.setPressure = function(pressure){_setPressure(pressure);}
+this.resize = function(size){_resize(size);}
+this.showBox = function(){_showBox();}
+this.hideBox = function(){_hideBox();}
+
+return attitude;
+};
+
+// Extension to jQuery
+$.flightIndicator = function(placeholder, type, options){
+var flightIndicator = new FlightIndicator($(placeholder), type, options)
+return flightIndicator;
+}
+
+$.fn.flightIndicator = function(data, type, options){
+return this.each(function(){
+$.flightIndicator(this, type, options);
+});
+}
+}( jQuery ));
+
+</script>
+
+
+
+<script type="text/javascript">
+
+  //Jquery to ROS 
+//widgets
+  // First static example
+  var first_attitude = $.flightIndicator('#first_attitude', 'attitude', {size:35, roll:0, pitch:0, showBox : true});
+  // Dynamic examples
+  var attitude = $.flightIndicator('#attitude', 'attitude', {roll:0, pitch:0, size:200, showBox : true});
+  var heading = $.flightIndicator('#heading', 'heading', {heading:0, showBox:true});
+  var variometer = $.flightIndicator('#variometer', 'variometer', {vario:-5, showBox:true});
+  var airspeed = $.flightIndicator('#airspeed', 'airspeed', {showBox: false});
+  var altimeter = $.flightIndicator('#altimeter', 'altimeter');
+  var turn_coordinator = $.flightIndicator('#turn_coordinator', 'turn_coordinator', {turn:0});
+  
+  // Update at 20Hz  //DEĞERLERİN UPGRADE YAPILDIĞI YER, BURAYA JQUERY İLE BİLGİLER GELECEK VE DEĞERLER DEĞİŞECEKTİR.!!!!!
+  var increment = 0;
+  var x = "";
+  setTimeout(setInterval(function() {
+
+
+      heading_deger_float = window.heading;
+
+      var roll_deger_float = window.roll;
+      //window.alert(roll_deger_float);
+
+      var pitch_deger_float = window.pitch;
+      //window.alert(pitch_deger);
+
+      var yaw_deger_float = window.yaw;
+ 
+      var speed_x_float = window.speed_x
+      //window.alert(speed_x_float);
+  
+
+      var speed_y_float = window.speed_y;
+      //window.alert(speed_y_float);
+
+      var speed_z_float = window.speed_z;
+      //window.alert(speed_z_float);
+
+      speed_x_float_kare = window.speed_x*window.speed_x;
+      speed_y_float_kare = window.speed_y*window.speed_y;
+      speed_z_float_kare = window.speed_z*window.speed_z;
+
+      var speed_x_y_z = speed_x_float_kare + speed_y_float_kare + speed_z_float_kare;
+      speed_x_y_z = Math.sqrt(speed_x_y_z);
+      speed_x_y_z = speed_x_y_z*(1.961)*1000;
+      
+      
+      latitude_global = window.latitude;
+      longitude_global = window.longitude;
+      
+      altitude_float_deger = window.altitude;
+      
+      // Airspeed update
+      airspeed.setAirSpeed(speed_x_y_z);
+      
+      // Attitude update
+      attitude.setRoll(window.roll*1000);
+      attitude.setPitch(window.pitch*100);
+  
+      // Altimeter update
+     
+      
+
+      if(altitude != "-"){
+        altimeter.setAltitude(window.altitude);
+        altimeter.setPressure(window.altitude*10.078);
+        //window.alert(altitude_float_deger)
+        //window.alert("ALTITUDE YUVARLANMIS HALI:" + altitude_float_deger);
+      }
+      
+      
+      increment++;
+      
+      // TC update - note that the TC appears opposite the angle of the attitude indicator, as it mirrors the actual wing up/down position
+      turn_coordinator.setTurn(-window.roll*1000);
+      
+      
+      // Heading update
+      heading.setHeading(-(window.heading - 90));
+      //heading.setHeading(90);
+      
+
+      var speed_z_float_varyo = window.speed_z*196.85;
+      // Vario update
+      variometer.setVario(speed_z_float_varyo/1000);
+      
+  }, 1000),1000);
+  </script>
+
+<script>
+
+  
+  setTimeout(setInterval(batteryUpdate,1000),1000);
+  
+      function batteryUpdate(){
+
+      var battery_charge = window.battery*100;
+    
+      let battery_sembol = document.getElementById("battery_sembol");
+      
+     
+      if(battery_charge >75){
+        setTimeout(function(){
+            battery_sembol.innerHTML = "&#xf240";
+        },2000)
+      }
+      else if(battery_charge>50 && battery_charge<75){
+        setTimeout(function(){
+          battery_sembol.innerHTML = "&#xf241";
+        },2000)
+      }
+  
+      else if(battery_charge>25 && battery_charge<50){
+        setTimeout(function(){
+          battery_sembol.innerHTML = "&#xf242";
+        },2000)
+      }
+  
+      else{
+        setTimeout(function(){
+          battery_sembol.innerHTML = "&#xf243";
+        },2000)
+      }
+
+    }
+    
+   
+    
+  </script>
+  
+<script>
+  //set real-time data
+
+  var coordinatesLine = [
+        
+      ]
+
+  var googlemaps = document.getElementById("map");
+
+  window.updateMarkerFcn = function updateMarker(Lat, Lon, Heading){
+
+
+      var point = new google.maps.LatLng(Lat, Lon);
+      //var latLng = new google.maps.LatLng(51.433373, -0.712251);
+      marker.setPosition(point);
+
+      if(window.parent.panToCondition > 0)
+      {
+      map.setCenter(point);
+      }
+
+      var icon = marker.getIcon();
+      var icon = marker.getIcon();
+      icon.rotation = -Heading + 90 ;
+      //window.alert(Heading);
+      marker.setIcon(icon);
+           
+}
+
+window.updateLineFcn = function updateLine(new_lat, new_lon){
+  coordinatesLine.push({lat: new_lat, lng: new_lon})
+  var changed_coordinates = new google.maps.Polyline({
+    path: coordinatesLine,
+    geodesic: true,
+    strokeColor: "#FF0000",
+    strokeOpacity: 1.0,
+    strokeWeight: 2,
+  });
+  changed_coordinates.setMap(map);
+  if(coordinatesLine.length > 3)
+  {
+    coordinatesLine.shift();
+  }
+}
+
+window.updateGoogleMapFcn = function updateGoogleMap(){
+setInterval(function(){
+  
+  if(String(latitude_global) != "NaN")
+  //if(String(latitude_global) != "NaN" && googlemaps.style.display != "none")
+  {
+      //window.alert(latitude_global);
+      window.parent.updateMarkerFcn(latitude_global, longitude_global, heading_deger_float);
+      window.parent.updateLineFcn(latitude_global, longitude_global);
+      //window.alert("Line");
+
+    }
+    
+}, 1000);
+}
+
+window.parent.updateGoogleMapFcn();
+
+</script>
+
+
+
+
+
+<script type="text/javascript" type="text/javascript">
+  function changeMap(){
+
+    var googlemaps = document.getElementById("map");
+    var mapbox_div = document.getElementById("maps");
+    
+    if(googlemaps.style.display == "none")
+    {
+      googlemaps.style.display = "block";
+      mapbox_div.style.display = "none";
+      //window.alert("if");
+    }
+
+    else
+    {
+      //window.alert("else");
+      mapbox_div.style.display = "block";
+      googlemaps.style.display = "none";
+    }
+    
+  }
+</script>
+
+
+<script type="text/javascript" type="text/javascript">
+
+  setTimeout(function(){
+  var ros = new ROSLIB.Ros({
+    url:'ws://localhost:9090'
+  })
+  ros.on('connection', function(){
+    console.log('Connected to websocket server.');
+  });
+
+  ros.on('error', function(error){
+    console.log('Error connecting to websocket server: ', error);
+  });
+
+  ros.on('close', function(){
+    console.log('Connection to websocket server closed.');
+  });
+
+  var ground_control_station_ = new ROSLIB.Topic({
+    ros: ros,
+    name: '/data_from_vehicle',
+    messageType: 'std_msgs/String'
+  });
+
+  var communication_data;
+
+  ground_control_station_.subscribe(function(message){
+    //console.log('Received message on ' + ground_control_station_.name + message.data);
+    communication_data = JSON.parse(message.data)
+    window.parent.latitude = communication_data["lat"];
+    window.parent.longitude = communication_data["lon"];
+    window.parent.altitude = communication_data["altitude"];
+    window.parent.heading = communication_data["heading"];
+    window.parent.roll = communication_data["roll"];
+    window.parent.pitch = communication_data["pitch"];
+    window.parent.yaw = communication_data["yaw"];
+    window.parent.speed_x = communication_data["speed_x"];
+    window.parent.speed_y = communication_data["speed_y"];
+    window.parent.speed_z = communication_data["speed_z"];
+    window.parent.battery = communication_data["battery"];
+    window.parent.data_flag = true;
+    console.log("Altitude: " + altitude + " | Longitude: " + longitude + " | Altitude: " + altitude + " | Roll: " + roll + " | Yaw: " + yaw + " | Pitch: " + pitch + " | Speed x: " + speed_x + " | Speed_y: " + speed_y + " | Speed_z: " + speed_z + " | Battery: " + battery);
+  });
+
+
+},100);
+
+</script>
+
+
+<script>
+  //Update DIVS
+
+  var latitude_div = document.getElementById("latitude");
+  var longitude_div = document.getElementById("longitude");
+  var altitude_div = document.getElementById("altitude");
+
+  var heading_div = document.getElementById("heading1");
+  var roll_div = document.getElementById("roll");
+  var pitch_div = document.getElementById("pitch");
+  var yaw_div = document.getElementById("yaw");
+
+  var speed_x_div = document.getElementById("speed_x");
+  var speed_y_div = document.getElementById("speed_y");
+  var speed_z_div = document.getElementById("speed_z");
+
+
+
+setTimeout(setInterval(function(){
+  if(parent.data_flag == true)
+  {
+  latitude_div.innerHTML = window.latitude.toFixed(4);
+  longitude_div.innerHTML = window.longitude.toFixed(4);
+  altitude_div.innerHTML = window.altitude.toFixed(4);
+
+  heading_div.innerHTML = window.heading.toFixed(4);
+  roll_div.innerHTML = window.roll.toFixed(4);
+  pitch_div.innerHTML = window.pitch.toFixed(4);
+  yaw_div.innerHTML = window.yaw.toFixed(4);
+
+  speed_x_div.innerHTML = window.speed_x.toFixed(4);
+  speed_y_div.innerHTML = window.speed_y.toFixed(4);
+  speed_z_div.innerHTML = window.speed_z.toFixed(4);
+}
+
+},1000),1000)
+  
+</script>
+
+{%endblock body3%}

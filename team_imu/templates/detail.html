@@ -1,0 +1,26 @@
+{%extends "layout.html"%}
+{%block body%}
+<h3>Sonuç:{{result.img_name}}</h3>
+<hr>
+<p>{{result.img_type}}</p>
+<hr>
+<p>{{result.shape}}</p>
+<hr>
+<p>{{result.shape}}</p>
+<hr>
+<p>{{result.shape_color}}</p>
+<hr>
+<p>{{result.latitude}}</p>
+<hr>
+<p>{{result.longitude}}</p>
+<hr>
+<p>{{result.orientation}}</p>
+<hr>
+<p>{{result.alphanumeric}}</p>
+<hr>
+<p>{{result.alphanumeric_color}}</p>
+<hr>
+<p>{{result.is_autonom}}</p>
+<hr>
+<img class="img-fluid rounded" src="{{result.file.url}}">
+{%endblock body%}

@@ -1,0 +1,40 @@
+<!-- Grey with black text -->
+<!--Navbar-->
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <ul class="navbar-nav">
+    <li class="nav-item active">
+      <a class="nav-link" href="/">Anasayfa</a>
+    </li>
+  </ul>
+
+  {%if request.user.is_authenticated%}
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item active">
+      <a class="nav-link" href="/base/board">Board</a>
+    </li>
+    <li class="nav-item active">
+      <a class="nav-link" href="/base/photos">Photos</a>
+    </li>
+    <li class="nav-item active">
+      <a class ="nav-link"href="/base/map/googlemaps">Ground Control Station</a>
+    </li>
+    <li class="nav-item active">
+      <a class ="nav-link"href="/base/logout">Çıkış Yap</a>
+    </li>
+  </ul>
+  {%else %}
+    <ul class = "navbar-nav ml-auto">
+      <li class="nav-item active">
+        <a class ="nav-link"href="/base/login">Giriş Yap</a>
+      </li>
+      <li class="nav-item active">
+        <a class ="nav-link"href="/base/register">Kayıt Ol</a>
+      </li>
+    </ul>
+  {%endif%}
+  
+        
+    
+</nav>
+
+

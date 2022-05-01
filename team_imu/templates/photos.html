@@ -1,0 +1,30 @@
+{%extends "layout.html"%}
+{%block body%}
+{%for photos in photos_dir_html%}
+
+<script>
+    function scrollWin() {
+        window.scrollBy(100,400)
+    }
+    </script>
+<div class="text-center">
+    
+    <form action="/base/add_photo/{{photos}}" method="GET">
+        <h4>{{photos}}</h4>
+        <img class="img-fluid rounded" src="/media/media/{{photos}}" id="photo">
+        <hr>
+        <button class="btn btn-success" type="submit">Crop</button>
+    </form>
+    <form action="/base/delete_photo/{{photos}}">
+        <button class="btn btn-danger" type="submit">Delete</button>
+    </form>
+    <button onclick="scrollWin()" class="btn btn-warning">Skip</button>
+
+</div>
+
+
+<br><br><br>
+<hr>
+{%endfor%}
+{%endblock body%}
+

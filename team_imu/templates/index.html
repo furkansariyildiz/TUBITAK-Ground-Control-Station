@@ -1,0 +1,252 @@
+
+{%extends "layout.html"%}
+{%load static%}
+{%block body3%}
+  
+
+<input type="file" name="inputfile"
+id="inputfile">
+<br>
+
+<pre id="output"></pre>
+
+<script type="text/javascript">
+function test()
+{
+
+
+document.getElementById('inputfile').addEventListener('change', function() {
+  
+var fr=new FileReader();
+fr.onload=function(){
+    document.getElementById('output')
+            .textContent=fr.result;
+}
+  
+fr.readAsText(this.files[0]);
+console.log(this.files[0]["name"])
+})
+}
+
+
+</script>
+
+<script>
+  setTimeout(function(){
+  test();
+  //window.alert("asds")
+},1000)
+</script>
+
+
+<script>
+  
+  var coordinatesJsonType = {
+  "type": "geojson",
+  "data": {
+    "features": [
+  
+      {
+        "type": "Feature",
+        "properties": {
+          "level": 1,
+          "name": "Bird Exhibit",
+          "height": 2,
+          "base_height": 0,
+          "color": "red"
+        },
+        "geometry": {
+          "coordinates": [
+            [
+            ]
+          ],
+          "type": "Polygon"
+        }
+     
+      }
+    ],
+    "type": "FeatureCollection"
+  }
+  }
+  coordinatesJsonType["data"]["features"][0]["properties"]["height"] = 10;
+  //window.alert(coordinatesJsonType["data"]["features"][0]["properties"]["height"]);
+/*
+var obj = {a: 25, b: 50, c: 75};
+var A = Object.create(obj);
+var B = Object.create(obj);
+
+var coordinatesJson =  JSON.parse(JSON.stringify(coordinatesJsonType)) 
+coordinatesJson["data"]["features"][0]["geometry"]["coordinates"][0].push([5,5])
+
+alert(coordinatesJson["data"]["features"][0]["geometry"]["coordinates"]);
+
+alert(coordinatesJsonType["data"]["features"][0]["geometry"]["coordinates"]);
+A.a = 30;
+B.a = 40;
+
+//alert(obj.a + " " + A.a + " " + B.a); // 25 30 40
+
+  coordinatesJsonType["data"]["features"][0]["geometry"]["coordinates"][0].push([5,5]);
+  coordinatesJsonType["data"]["features"][0]["geometry"]["coordinates"][0].push([10,10]);
+  coordinatesJsonType["data"]["features"][0]["geometry"]["coordinates"][0].push([5,5]);
+  console.log(coordinatesJsonType);
+
+  var deneme = String(coordinatesJsonType);
+  deneme = JSON.parse(deneme);
+  */
+  const set1 = new Set();
+
+  var selam = {x: 10, y: 20};
+
+
+
+  set1.add(selam);
+  
+  console.log(set1);
+  set1.delete(selam);
+  // Delete any point with `x > 10`.
+  set1.forEach((point) => {
+    if (point.x > 10) {
+      set1.delete(point);
+      window.alert("asdas")
+    }
+  });
+
+console.log("silindi", set1);
+// expected output: 1
+
+
+</script>
+
+
+<p>Click the button to demonstrate the prompt box.</p>
+
+<button onclick="myFunction()">Try it</button>
+
+<p id="demo"></p>
+
+<script>
+  function myFunction() {
+  var value = prompt("Please enter the height of building", "0");
+
+  if (value != null && String(parseInt(value, 10)) != "NaN") {
+
+      value = parseInt(value, 10);
+      document.getElementById("demo").innerHTML =
+      "Hello " + String(value) + "! How are you today?";
+  }
+
+  else
+  {
+    window.alert("Please enter an integer or float and re-upload your json file!");
+  }
+}
+</script>
+
+
+
+
+
+
+<script type="text/javascript" type="text/javascript">
+  // Connecting to ROS
+  // -----------------
+  setTimeout(function(){
+    var ros = new ROSLIB.Ros({
+    url : 'ws://localhost:9090'
+  });
+
+  ros.on('connection', function() {
+    console.log('Connected to websocket server.');
+  });
+
+  ros.on('error', function(error) {
+    console.log('Error connecting to websocket server: ', error);
+  });
+
+  ros.on('close', function() {
+    console.log('Connection to websocket server closed.');
+  });
+
+  var cmdVel = new ROSLIB.Topic({
+    ros : ros,
+    name : '/cmd_vel',
+    messageType : 'geometry_msgs/Twist'
+  });
+
+  var twist = new ROSLIB.Message({
+    linear : {
+      x : 0.1,
+      y : 0.2,
+      z : 0.3
+    },
+    angular : {
+      x : -0.1,
+      y : -0.2,
+      z : -0.3
+    }
+  });
+  cmdVel.publish(twist);
+
+  // Subscribing to a Topic
+  // ----------------------
+
+  var listener = new ROSLIB.Topic({
+    ros : ros,
+    name : '/listener',
+    messageType : 'std_msgs/String'
+  });
+
+  listener.subscribe(function(message) {
+    console.log('Received message on ' + listener.name + ': ' + message.data);
+  });
+
+  // Calling a service
+  // -----------------
+
+  var addTwoIntsClient = new ROSLIB.Service({
+    ros : ros,
+    name : '/add_two_ints',
+    serviceType : 'rospy_tutorials/AddTwoInts'
+  });
+
+  var request = new ROSLIB.ServiceRequest({
+    a : 1,
+    b : 2
+  });
+
+  addTwoIntsClient.callService(request, function(result) {
+    console.log('Result for service call on '
+      + addTwoIntsClient.name
+      + ': '
+      + result.sum);
+  });
+
+  // Getting and setting a param value
+  // ---------------------------------
+
+  ros.getParams(function(params) {
+    console.log(params);
+  });
+
+  var maxVelX = new ROSLIB.Param({
+    ros : ros,
+    name : 'max_vel_y'
+  });
+
+  maxVelX.set(0.8);
+  maxVelX.get(function(value) {
+    console.log('MAX VAL: ' + value);
+  });
+
+  },5000);
+</script>
+</head>
+
+<body>
+  <h1>Simple roslib Example</h1>
+  <p>Check your Web Console for output.</p>
+</body>
+
+  
+{%endblock body3%}

@@ -1,0 +1,55 @@
+{%extends "layout.html"%}
+
+{%block body%}
+<h3>Board Tablosu</h3>
+<a href="/base/result/" class="btn btn-danger">Sonuç Ekle</a>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Img Name</th>
+        <th scope="col">Img Type</th>
+        <th scope="col">Img</th>
+        <th scope="col">Shape</th>
+        <th scope="col">Shape Color</th>
+        <th scope="col">Latitude</th>
+        <th scope="col">Longitude</th>
+        <th scope="col">Orientation</th>
+        <th scope="col">Alphanumeric</th>
+        <th scope="col">Alphanumeric Color</th>
+        <th scope="col">Otonom</th>
+        <th scope="col">Update</th>
+        <th scope="col">Delete</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {%if results %}
+      {%for result in results%}
+      <tr>
+
+        <td><a href="/base/result/detail/{{result.id}}">{{result.img_name}}</a></td>
+        <td>{{result.img_type}}</td>
+        <td>{{result.img}}</td>
+        <td>{{result.shape}}</td>
+        <td>{{result.shape_color}}</td>
+        <td>{{result.latitude}}</td>
+        <td>{{result.longitude}}</td>
+        <td>{{result.orientation}}</td>
+        <td>{{result.alphanumeric}}</td>
+        <td>{{result.alphanumeric_color}}</td>
+        <td>{{result.is_autonom}}</td>
+        <td><a href="/base/result/update/{{result.id}}" class="btn btn-danger">Update</a></td>
+        <td><a href="/base/result/delete/{{result.id}}" class="btn btn-danger">Delete</a></td>
+
+
+      </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+  {%else%}
+  <div class="danger alert-danger">
+      Sonuç Yok.
+  </div>
+  {%endif%}
+
+{%endblock body%}

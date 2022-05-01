@@ -1,0 +1,66 @@
+<form id="contactForm2" name="form" action="" method="post">
+    {% csrf_token %} 
+    <!-- Form input fields here (do not forget your name attributes). -->
+    <input type="text" id="control_input2"  onkeydown="myFunction_for_input(event)">
+    
+</form>
+
+
+
+
+<script type="text/javascript">
+
+
+function myFunction_for_input(event)
+{
+    value = event.key;    
+    
+    //var form = document.getElementById("contactForm1");
+    
+    //window.alert(data);
+    var frm = $('#contactForm2');
+    
+    frm.submit(function (e) {
+        var data = event.key;
+        //window.alert(data);
+        e.preventDefault();
+    
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: {
+                'control_input': value,
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+         
+        });
+    });
+    
+  
+
+  $("form").submit(function () {
+    if ($(this).valid()) {
+        $(this).submit(function () {
+            return false;
+        });
+        return true;
+    }
+    else {
+        return false;
+    }
+});
+
+    frm.submit();
+    $("#contactForm2").closest('form').find("input[type=text], textarea").val("");
+  
+    
+    //window.alert(data);
+    //form.appendChild(event.key);
+    
+
+    
+    //form.submit(control_input2);
+  
+    
+}
+</script>
