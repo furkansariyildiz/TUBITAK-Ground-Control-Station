@@ -1,4 +1,4 @@
-# Team IMU Ground Control Station Software
+# TUBITAK Ground Control Station Software
 
 Çalıştırmak için "manage.py" Python dosyasının bulunduğu dosya dizine terminal ile gidip "python manage.py runserver" veya "python3 manage.py runserver" komutu girilmelidir.
 
@@ -8,7 +8,7 @@ Kameradan gelecek olan görüntünün arayüze aktarılması için de mjpeg_serv
 
 Tarayıcıdan -Google Chrome veya Opera önerilir- localhost:8000/base/map/googlemaps adresini girerek kontrol istasyonuna ulaşabilirsiniz.
 
-Kurulum için yardımcı olabilecek linkler;
+Kurulum için yardımcı olabilecek bağlantılar;
 
 http://wiki.ros.org/ROS/Installation
 https://docs.djangoproject.com/en/4.0/topics/install/
